@@ -1,0 +1,132 @@
+<html>	
+<head>
+	<style>
+		body {
+			overflow: hidden;
+			margin:0;
+		}
+
+		#snowflake-container {
+			z-index: -1;
+			position: absolute;
+			height: 100vh;
+			width: 100vw;
+			background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+			filter: drop-shadow(0 0 10px white);
+		}
+		.snowflake{
+			position:absolute;
+			top:-40px;
+			transition: left 5s;
+			opacity: 1;
+			color: #fff;
+			-webkit-animation:spin 4s linear infinite;
+			-moz-animation:spin 4s linear infinite;
+			animation:spin 4s linear infinite;
+		}
+
+		@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+		@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+		@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+	</style>
+</head>
+<body>
+	<div id="snowflake-container"></div>
+	<svg height="0" width="0">
+		<defs>
+			<symbol id="hat"> 
+				<g>
+					<path stroke-width="0" d="M 197.137 53.663 C 207.334 55.596 216.586 57.875 232.768 63.165 C 240.867 65.813 249.333 74.415 258.302 79.198 C 269.98 85.426 283.322 101.095 293.337 108.889 C 300.585 114.529 306.851 124.919 312.637 131.158 C 319.828 138.91 321.905 153.307 328.076 163.224 C 333.732 172.312 331.843 176.278 334.608 184.008 C 335.701 187.063 336.782 195.804 337.487 198.413 C 339.206 201.164 316.206 197.432 313.528 199.744 C 311.207 201.747 295.309 199.63 289.97 199.167 C 282.493 199.28 269.404 199.913 258.745 200.777 C 256.653 202.117 235.192 201.589 232.173 200.932 C 229.944 200.446 190.66 205.698 188.37 204.077 C 183.755 204.62 197.307 182.268 199.81 162.63 C 202.112 144.568 199.856 133.265 192.684 123.438 C 186.498 114.962 167.168 108.643 163.29 104.138 C 161.115 101.611 133.404 100.627 132.114 98.497 C 130.539 95.896 128.692 91.329 129.145 87.808 C 129.622 84.1 132.702 79.134 135.38 76.822 C 136.321 76.01 137.372 75.383 138.49 74.918 C 140.546 73.15 143.007 72.38 145.475 72.072 C 147.983 71.759 151.577 65.544 154.078 66.594 C 165.426 56.616 187.31 51.8 197.137 53.663 Z" style="stroke-width: 2px; fill: rgb(177, 30, 49); stroke: rgb(177, 30, 49);"/>
+					<ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 2px;" cx="126.713" cy="86.784" rx="27.613" ry="27.613"/>
+					<path stroke-width="0" d="M 258.896 185.492 C 272.077 185.395 286.276 184.312 298.088 185.492 C 308.576 186.541 320.032 191.434 326.592 191.431 C 330.733 191.429 332.354 188.642 335.499 189.055 C 339.125 189.532 344.277 192.046 347.079 195.291 C 350.049 198.73 352.727 205.209 352.423 209.542 C 352.141 213.564 349.341 218.198 346.188 220.528 C 342.96 222.914 338.788 223.588 333.124 223.497 C 324.959 223.367 312.363 217.621 300.464 216.371 C 287.261 214.985 271.195 216.267 257.114 216.371 C 243.508 216.472 229.139 216.257 217.328 216.965 C 207.144 217.576 196.869 221.111 190.012 219.934 C 184.906 219.058 180.845 216.675 178.433 213.699 C 176.179 210.919 175.01 206.531 175.464 203.01 C 175.941 199.302 179.02 194.336 181.699 192.024 C 184.019 190.021 186.026 189.902 190.012 189.055 C 196.397 187.699 207.975 186.695 218.516 186.086 C 230.607 185.388 245.556 185.591 258.896 185.492 Z" style="stroke-width: 2px; stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255);"/>
+				</g>
+			</symbol>
+		</defs>
+	</svg>
+
+	<svg height="100%" width="100%" id="hat-container">
+		<text x="50%" y="20%" dominant-baseline="middle" text-anchor="middle"
+			font-size="40" font-family="Comic Sans" style="font-weight: 400;" fill="#ffffff"
+		>Priecīgus Ziemassvētkus, Krišjāni!</text>
+	</svg>
+
+	<script>
+		// based on https://stackoverflow.com/a/41244075
+		const maxSnowflakes = 500;
+		let snowflakeCount = 0;
+
+		function AnimateSnowflake() {
+			snowflakeCount++;
+
+			const element = document.createElement('em');
+			element.classList.add('snowflake');
+			element.innerText = '*';
+			document.getElementById('snowflake-container').appendChild(element); 
+				
+			// init snowflake
+			let x = (Math.random() * window.innerWidth);
+			const size = (Math.random() * 35) + 10;
+			const opacity = Math.random();			
+			element.style.fontSize = size + 'px';
+			element.style.left = x +'px';
+			element.style.opacity = opacity;
+
+			// animate sideways movement
+			var swing_direction = 1;
+			var swing_wave = Math.random() * 100;				
+			var interval = setInterval(function() {
+				x += (swing_direction * swing_wave);
+				element.style.left = x;
+				swing_direction = - swing_direction;
+			}, 1000);
+			
+			// animate vertical movement
+			const options = {
+				duration: (Math.random() * 3000) + 3000,
+				iterations: 1,
+			};
+			const animation = element.animate({ top: '100vh' }, options, );
+			animation.onfinish = function() {
+				clearInterval(interval);
+
+				document.getElementById('snowflake-container').removeChild(element);
+				snowflakeCount--;
+			};
+			animation.play();
+		}
+
+		var snow = window.setInterval(function () { 
+			if (snowflakeCount < maxSnowflakes) {
+				AnimateSnowflake();
+			}
+		}, 60);
+	
+		const hatContainer = document.getElementById('hat-container');
+
+		const screenCenterX = hatContainer.scrollWidth / 2;
+		const screenCenterY = hatContainer.scrollHeight / 2;
+		
+		const xOffset = 345;
+		const yOffset = 225;
+
+		const hatWidth = 180;
+		
+		const hats = 5;
+		const start = screenCenterX - hats / 2 * hatWidth;
+		
+		for (let i = 0; i < hats; i++) {
+			addHat(start + i * hatWidth, screenCenterY, i * 1381, screenCenterY / 2);
+		}
+
+		function addHat(x, y, timeOffset, amplitude) {
+			let element = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+			element.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#hat');
+			element.setAttribute('x', x - xOffset / 2);
+			element.setAttribute('y', y);
+			element.animate([{ y: y }, { y: y - amplitude }, { y: y }],
+				{ duration: 3449, delay: timeOffset, easing: 'ease-in-out', iterations: Infinity });
+			hatContainer.appendChild(element);
+		}
+	</script>
+</body>
+</html>
